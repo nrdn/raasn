@@ -1,0 +1,17 @@
+doctype html
+html
+	head
+		include header
+	body
+		- var date = new Date()
+		//- include counters
+		.main_block
+			.header_block
+				.head_title_block
+					.title_contacts 107031, Москва, Большая Дмитровка, 24, стр. 1
+					.title_phone Приемная +7 (495) 625-79-67
+				a(href='/').logo РААСН
+				.logo_under Российская Академия архитектуры и строительных наук
+			.content_block
+				block content
+			.footer_block= 'РААСН 2001 - ' + date.getFullYear()

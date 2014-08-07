@@ -1,0 +1,144 @@
+.main_block {
+	/*outline: 1px solid red;*/
+	overflow: hidden;
+}
+
+.footer_block {
+	clear: both;
+}
+
+.content_block {
+	float: left;
+	width: 1020px;
+	margin-bottom: 20px;
+}
+
+.content_right_block {
+	float: left;
+}
+
+.form_options {
+	width: 225px;
+	margin-left: 20px;
+	margin-top: 506px;
+	border: 2px solid black;
+	padding: 5px;
+}
+
+.form_image_main {
+	width: 1280px;
+	height: 400px;
+	margin-top: 20px;
+	background-size: cover;
+	background-position: center;
+	background-color: #a2c179;
+}
+
+.form_images_second {
+	width: 1280px;
+	min-height: 400px;
+	overflow: hidden;
+	margin-top: 20px;
+	background-color: #6679c1;
+}
+
+.image_second_preview {
+	width: 400px;
+	height: 400px;
+	float: left;
+	position: relative;
+	background-size: cover;
+	background-position: center;
+	margin-right: 40px;
+	margin-bottom: 20px;
+	background-color: #c17848;
+}
+
+.image_second_preview:nth-child(4n) {
+	margin-right: 0px;
+}
+
+.image_second_description {
+	width: 400px;
+	min-height: 40px;
+	outline: none;
+	position: absolute;
+	bottom: 0;
+	background-color: #76c169;
+}
+
+.form_images_maps {
+	width: 1280px;
+	min-height: 400px;
+	overflow: hidden;
+	margin-top: 20px;
+	background-color: #c19db9;
+}
+
+.image_maps_preview {
+	width: 240px;
+	height: 240px;
+	float: left;
+	position: relative;
+	background-size: cover;
+	background-position: center;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	background-color: #c17848;
+}
+
+.image_maps_preview:nth-child(6n) {
+	margin-right: 0px;
+}
+
+.image_maps_description {
+	width: 240px;
+	min-height: 40px;
+	outline: none;
+	position: absolute;
+	bottom: 0;
+	background-color: #65abc1;
+}
+
+.form_title {
+	width: 1020px;
+	border: 2px solid #23c15a;
+	margin-top: 20px;
+	outline: 0px;
+	font: 16pt/18pt 'helveticaneuecyrlight';
+}
+
+.form_desc_title {
+	position: absolute;
+	display: inline-block;
+	font: 12pt/14pt 'helveticaneuecyrlight';
+}
+
+.form_description {
+	width: 1020px;
+	min-height: 300px;
+	margin-top: 20px;
+	outline: 0px;
+	font: 12pt/14pt 'helveticaneuecyrlight';
+	border: 2px solid #4e8dc1;
+}
+
+.submit {
+	width: 120px;
+	height: 25px;
+	margin-top: 20px;
+	padding-top: 5px;
+	font: 12pt/14pt 'helveticaneuecyrlight';
+	text-align: center;
+	border: 2px solid #c1324b;
+}
+
+.submit:hover {
+	cursor: pointer;
+	color: white;
+	background-color: #c1324b;
+}
+
+#image_main_fallback, #images_second_fallback {
+	display: none;
+}

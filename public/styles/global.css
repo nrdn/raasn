@@ -1,0 +1,44 @@
+.main_block {
+	width: 1280px;
+	margin: 0 auto;
+}
+
+.content_block {
+	width: 1280px;
+	margin-top: 20px;
+	min-height: 600px;
+	/*outline: 1px solid red;*/
+}
+
+.head_title_block {
+	overflow: hidden;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #b2baba;
+	font: 12pt/14pt 'helveticaneuecyrlight';
+}
+
+.title_contacts {
+	float: left;
+}
+
+.title_phone {
+	float: right;
+}
+
+a.logo {
+	text-align: center;
+	color: black;
+	text-decoration: none;
+	display: block;
+	font: 45pt/48pt 'helveticaneuecyrthin';
+}
+
+.logo_under {
+	text-align: center;
+	font: 12pt/14pt 'helveticaneuecyrthin';
+}
+
+.footer_block {
+	text-align: center;
+	font: 10pt/12pt 'helveticaneuecyrbold';
+}

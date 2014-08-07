@@ -1,0 +1,15 @@
+extends ../layout
+
+block title
+	title ЗВЕЗДОЧЕТ
+
+block content_style
+	link(rel='stylesheet', type='text/css', href='/styles/add.css')
+
+block content
+	a.back_link(href='/logout') Выход
+	.title.star ЗВЕЗДОЧЕТ
+	.main_menu_block
+		br
+		b Посты:
+		a(href='/auth/posts')= ' редактировать'

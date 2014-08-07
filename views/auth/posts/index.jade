@@ -1,0 +1,24 @@
+extends ../../layout
+
+block title
+	title СПИСОК ПОСТОВ
+
+block content_style
+	link(rel='stylesheet', type='text/css', href='/styles/add.css')
+
+block content_scripts
+	script(type='text/javascript', src='/scripts/lists.js')
+
+block content
+	a.back_link(href='/auth') < Назад
+	.title СПИСОК ПОСТОВ
+	br
+	a.add(href='/auth/posts/add') добавить пост
+	br
+	br
+	.main_menu_block
+		each post in posts
+			.post
+				a.rm_post(href='#', id=post._id)= 'удалить '
+				!=' | '
+				a(href='/auth/posts/edit/' + post._id)= post.title.ru
