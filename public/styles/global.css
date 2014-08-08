@@ -40,5 +40,8 @@ a.logo {
 
 .footer_block {
 	text-align: center;
-	font: 10pt/12pt 'helveticaneuecyrbold';
+	font: 10pt/12pt 'helveticaneuecyrlight';
+	margin-top: 80px;
+	border-top: 1px solid #b2baba;
+	padding-top: 10px;
 }
