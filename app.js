@@ -140,7 +140,7 @@ function toMatrix(arr, row) {
 
 
 app.route('/').get(function(req, res) {
-  Post.find().exec(function(err, posts) {
+  Post.find().sort('-date').exec(function(err, posts) {
     res.render('main', {posts: posts});
   });
 });
