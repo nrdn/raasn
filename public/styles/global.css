@@ -1,10 +1,12 @@
 .main_block {
-	width: 1280px;
+	min-width: 1000px;
+	max-width: 1280px;
+	//width:1000px;
 	margin: 0 auto;
 }
 
 .content_block {
-	width: 1280px;
+	/*width: 1280px;*/
 	margin-top: 20px;
 	min-height: 600px;
 	/*outline: 1px solid red;*/
@@ -40,8 +42,5 @@ a.logo {
 
 .footer_block {
 	text-align: center;
-	font: 10pt/12pt 'helveticaneuecyrlight';
-	margin-top: 80px;
-	border-top: 1px solid #b2baba;
-	padding-top: 10px;
+	font: 10pt/12pt 'helveticaneuecyrbold';
 }
