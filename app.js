@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
 var express = require('express'),
     bodyParser = require('body-parser'),
     multer = require('multer'),
+    accepts = require('accepts'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     methodOverride = require('method-override'),
@@ -42,37 +43,6 @@ app.use(function(req, res, next) {
   res.locals.locale = req.cookies.locale || 'ru';
   next();
 });
-
-
-// app.use(function(req, res, next) {
-//   res.status(404);
-
-//   // respond with html page
-//   if (req.accepts('html')) {
-//     res.render('error', { url: req.url, status: 404 });
-//     return;
-//   }
-
-//   // respond with json
-//   if (req.accepts('json')) {
-//       res.send({
-//       error: {
-//         status: 'Not found'
-//       }
-//     });
-//     return;
-//   }
-
-//   // default to plain-text
-//   res.type('txt').send('Not found');
-// });
-
-// app.use(function(err, req, res, next) {
-//   var status = err.status || 500;
-
-//   res.status(status);
-//   res.render('error', { error: err, status: status });
-// });
 
 
 // -------------------
@@ -327,7 +297,44 @@ app.route('/robots.txt').get(function(req, res){
 
 
 // ------------------------
-// *** Other Block ***
+// *** Error Handling Block ***
+// ------------------------
+
+
+app.use(function(req, res, next) {
+  var accept = accepts(req);
+  res.status(404);
+
+  // respond with html page
+  if (accept.types('html')) {
+    res.render('error', { url: req.url, status: 404 });
+    return;
+  }
+
+  // respond with json
+  if (accept.types('json')) {
+      res.send({
+      error: {
+        status: 'Not found'
+      }
+    });
+    return;
+  }
+
+  // default to plain-text
+  res.type('txt').send('Not found');
+});
+
+app.use(function(err, req, res, next) {
+  var status = err.status || 500;
+
+  res.status(status);
+  res.render('error', { error: err, status: status });
+});
+
+
+// ------------------------
+// *** Connect server Block ***
 // ------------------------
 
 
