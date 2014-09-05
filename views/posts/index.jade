@@ -11,10 +11,13 @@ block content_scripts
 
 
 mixin trimString(str)
-	- for (var i = 250; i < str.length; i++)
-		- if (str[i] == '.' || str[i] == '?' || str[i] == '!')
-			- str = str.substr(0, i+1)
-	!= str + '..'
+	- if (str.length > 250)
+		- for (var i = 250; i < str.length; i++)
+			- if (str[i] == '.' || str[i] == '?' || str[i] == '!')
+				- str = str.substr(0, i+1)
+		!= str + '..'
+	- else
+		!= str
 
 block content
 	.content_title Последние новости
