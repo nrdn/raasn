@@ -20,6 +20,9 @@ block content_right
 		b.form_submit ОТПРАВИТЬ
 
 block content
+	- var year = new Date()
+	- year = year.getFullYear()
+	- var months = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ']
 	.form_block
 		a.back_link(href='/auth/posts') < Назад
 		.title РЕДАКТИРОВАТЬ ПОСТ
@@ -30,6 +33,19 @@ block content
 			.form_title Описание:
 			textarea.ru(name="ru[description]", rows="8",)= post.description.ru
 			textarea.en(name="en[description]", rows="8", disabled)
+			.form_title Дата:
+			select(name='date[date]')
+				option(value='') Дата
+				- for (var i=1; i<32; i++)
+					option(value=i, selected=(i == post.date.getDate()))= i
+			select(name='date[month]')
+				option(value='') Месяц
+				each month, i in months
+					option(value=i, selected=(i == post.date.getMonth()))= month
+			select(name='date[year]')
+				option(value='') Год
+				option(value=year, selected=(year == post.date.getFullYear()))= year
+				option(value=year - 1, selected=(year - 1 == post.date.getFullYear()))= year - 1
 			//- .form_title Фото:
 			//- input(type="file", name="photo")
 			br

@@ -192,6 +192,7 @@ add_posts.post(checkAuth, function(req, res) {
 
   post_item.title.ru = post.ru.title;
   post_item.description.ru = post.ru.description;
+  post_item.date = new Date(post.date.year, post.date.month, post.date.date);
 
   post_item.save(function(err, post_item) {
     res.redirect('/auth/posts');
@@ -223,6 +224,7 @@ edit_posts.post(checkAuth, function(req, res) {
 
     post_item.title.ru = post.ru.title;
     post_item.description.ru = post.ru.description;
+    post_item.date = new Date(post.date.year, post.date.month, post.date.date);
 
     post_item.save(function(err, post_item) {
       res.redirect('/auth/posts');
