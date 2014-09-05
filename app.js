@@ -110,8 +110,32 @@ function toMatrix(arr, row) {
 
 
 app.route('/').get(function(req, res) {
+  res.redirect('/posts')
+});
+
+
+// ------------------------
+// *** Posts Block ***
+// ------------------------
+
+
+app.route('/posts').get(function(req, res) {
   Post.find().sort('-date').exec(function(err, posts) {
-    res.render('main', {posts: posts});
+    res.render('posts', {posts: posts});
+  });
+});
+
+
+// ------------------------
+// *** Post Block ***
+// ------------------------
+
+
+app.route('/posts/:id').get(function(req, res) {
+  var id = req.params.id;
+
+  Post.findById(id).exec(function(err, post) {
+    res.render('posts/post.jade', {post: post});
   });
 });
 

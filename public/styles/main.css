@@ -21,6 +21,13 @@
 	font: 18pt/20pt 'helveticaneuecyrbold';
 	margin-bottom: 10px;
 	border-bottom: 1px solid #b2baba;
+	display: block;
+	color: black;
+	text-decoration: none;
+}
+
+a.post_title:hover {
+	color: #b2baba;
 }
 
 .post_description {

@@ -3,7 +3,6 @@ html
 	head
 		include header
 	body
-		- var date = new Date()
 		//- include counters
 		.main_block
 			.header_block
@@ -14,4 +13,5 @@ html
 				.logo_under Российская Академия архитектуры и строительных наук
 			.content_block
 				block content
+			- var date = new Date()
 			.footer_block= 'РААСН 2001 - ' + date.getFullYear()
