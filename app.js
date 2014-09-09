@@ -122,6 +122,13 @@ app.route('/').get(function(req, res) {
 app.route('/posts').get(function(req, res) {
   Post.find().sort('-date').exec(function(err, posts) {
     res.render('posts', {posts: posts});
+    Post.aggregate().group({
+      '_id': { month: { $month: "$date" }, day: { $dayOfMonth: "$date" }, year: { $year: "$date" } },
+      'posts': { $push: {title: '$title.ru', description: '$description.ru'} },
+      'count': { $sum: 1 }
+    }).exec(function(err, pts) {
+      console.log(pts[1]);
+    });
   });
 });
 
