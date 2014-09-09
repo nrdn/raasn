@@ -120,15 +120,12 @@ app.route('/').get(function(req, res) {
 
 
 app.route('/posts').get(function(req, res) {
-  Post.find().sort('-date').exec(function(err, posts) {
-    res.render('posts', {posts: posts});
-    Post.aggregate().group({
-      '_id': { month: { $month: "$date" }, day: { $dayOfMonth: "$date" }, year: { $year: "$date" } },
-      'posts': { $push: {title: '$title.ru', description: '$description.ru'} },
-      'count': { $sum: 1 }
-    }).exec(function(err, pts) {
-      console.log(pts[1]);
-    });
+  Post.aggregate().group({
+    '_id': { month: { $month: "$date" }, day: { $dayOfMonth: "$date" }, year: { $year: "$date" } },
+    'posts': { $push: {title: '$title', description: '$description'} },
+    'count': { $sum: 1 }
+  }).exec(function(err, dates) {
+    res.render('posts', {dates: dates});
   });
 });
 
@@ -334,36 +331,36 @@ app.route('/robots.txt').get(function(req, res){
 // ------------------------
 
 
-app.use(function(req, res, next) {
-  var accept = accepts(req);
-  res.status(404);
+// app.use(function(req, res, next) {
+//   var accept = accepts(req);
+//   res.status(404);
 
-  // respond with html page
-  if (accept.types('html')) {
-    res.render('error', { url: req.url, status: 404 });
-    return;
-  }
+//   // respond with html page
+//   if (accept.types('html')) {
+//     res.render('error', { url: req.url, status: 404 });
+//     return;
+//   }
 
-  // respond with json
-  if (accept.types('json')) {
-      res.send({
-      error: {
-        status: 'Not found'
-      }
-    });
-    return;
-  }
+//   // respond with json
+//   if (accept.types('json')) {
+//       res.send({
+//       error: {
+//         status: 'Not found'
+//       }
+//     });
+//     return;
+//   }
 
-  // default to plain-text
-  res.type('txt').send('Not found');
-});
+//   // default to plain-text
+//   res.type('txt').send('Not found');
+// });
 
-app.use(function(err, req, res, next) {
-  var status = err.status || 500;
+// app.use(function(err, req, res, next) {
+//   var status = err.status || 500;
 
-  res.status(status);
-  res.render('error', { error: err, status: status });
-});
+//   res.status(status);
+//   res.render('error', { error: err, status: status });
+// });
 
 
 // ------------------------
