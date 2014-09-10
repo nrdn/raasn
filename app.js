@@ -122,7 +122,7 @@ app.route('/').get(function(req, res) {
 app.route('/posts').get(function(req, res) {
   Post.aggregate()
   .group({
-    '_id': { month: { $month: "$date" }, day: { $dayOfMonth: "$date" }, year: { $year: "$date" } },
+    '_id': { month: { $month: '$date' }, day: { $dayOfMonth: '$date' }, year: { $year: '$date' } },
     'posts': { $push: {title: '$title', description: '$description', _id: '$_id'} },
     'count': { $sum: 1 }
   })
