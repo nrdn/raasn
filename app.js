@@ -120,11 +120,14 @@ app.route('/').get(function(req, res) {
 
 
 app.route('/posts').get(function(req, res) {
-  Post.aggregate().group({
+  Post.aggregate()
+  .group({
     '_id': { month: { $month: "$date" }, day: { $dayOfMonth: "$date" }, year: { $year: "$date" } },
-    'posts': { $push: {title: '$title', description: '$description'} },
+    'posts': { $push: {title: '$title', description: '$description', _id: '$_id'} },
     'count': { $sum: 1 }
-  }).exec(function(err, dates) {
+  })
+  .sort({'_id.year': -1, '_id.month': -1, '_id.day': -1})
+  .exec(function(err, dates) {
     res.render('posts', {dates: dates});
   });
 });
