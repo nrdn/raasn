@@ -28,7 +28,7 @@ block content
 				.post_item
 					.post_title_block
 						- var minutes = post.time.minutes <= 9  ? '0' + post.time.minutes : post.time.minutes
-						.post_date= post.time.hours + ':' + minutes
+						//- .post_date= post.time.hours + ':' + minutes
 						a.post_title(href='/posts/' + post._id)= post.title.ru
 					.post_description
 						+trimString(post.description.ru)
