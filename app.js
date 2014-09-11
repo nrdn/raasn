@@ -122,8 +122,22 @@ app.route('/').get(function(req, res) {
 app.route('/posts').get(function(req, res) {
   Post.aggregate()
   .group({
-    '_id': { month: { $month: '$date' }, day: { $dayOfMonth: '$date' }, year: { $year: '$date' } },
-    'posts': { $push: {title: '$title', description: '$description', _id: '$_id'} },
+    '_id': {
+      year: { $year: '$date' },
+      month: { $month: '$date' },
+      day: { $dayOfMonth: '$date' }
+    },
+    'posts': {
+      $push: {
+        title: '$title',
+        description: '$description',
+        _id: '$_id',
+        time: {
+          hours: { $hour: '$date' },
+          minutes: { $minute: '$date' }
+        }
+      }
+    },
     'count': { $sum: 1 }
   })
   .sort({'_id.year': -1, '_id.month': -1, '_id.day': -1})
@@ -194,12 +208,15 @@ add_posts.get(checkAuth, function(req, res) {
 add_posts.post(checkAuth, function(req, res) {
   var post = req.body;
   var files = req.files;
+  var date = new Date();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
 
   var post_item = new Post();
 
   post_item.title.ru = post.ru.title;
   post_item.description.ru = post.ru.description;
-  post_item.date = new Date(post.date.year, post.date.month, post.date.date);
+  post_item.date = new Date(Date.UTC(post.date.year, post.date.month, post.date.date, hours, minutes));
 
   post_item.save(function(err, post_item) {
     res.redirect('/auth/posts');
@@ -226,12 +243,15 @@ edit_posts.get(checkAuth, function(req, res) {
 edit_posts.post(checkAuth, function(req, res) {
   var post = req.body;
   var id = req.params.id;
+  var date = new Date();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
 
   Post.findById(id).exec(function(err, post_item) {
 
     post_item.title.ru = post.ru.title;
     post_item.description.ru = post.ru.description;
-    post_item.date = new Date(post.date.year, post.date.month, post.date.date);
+    post_item.date = new Date(Date.UTC(post.date.year, post.date.month, post.date.date, hours, minutes));
 
     post_item.save(function(err, post_item) {
       res.redirect('/auth/posts');

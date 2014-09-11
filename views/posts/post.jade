@@ -11,11 +11,6 @@ block content_scripts
 
 
 block content
-	//- .content_title Последние новости
 	.posts_block
-		.post_title_block
-			- var month = (post.date.getMonth() + 1) <= 9 ? '0' + (post.date.getMonth() + 1) : (post.date.getMonth() + 1)
-			- var date = post.date.getDate() <= 9 ? '0' + post.date.getDate() : post.date.getDate()
-			.post_date= date + '.' + month
-			.post_title= post.title.ru
+		.posts_date_title= post.title.ru
 		.post_description!= post.description.ru
