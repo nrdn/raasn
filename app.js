@@ -49,12 +49,14 @@ app.use(function(req, res, next) {
 // *** Routes Block ***
 // -------------------
 
+
 var main = require('./routes/main.js');
 var blog = require('./routes/blog.js');
 var auth = require('./routes/auth.js');
 var content = require('./routes/content.js');
 var files = require('./routes/files.js');
 var admin = require('./routes/admin.js');
+
 
 // ------------------------
 // *** Midleware Block ***
@@ -98,6 +100,10 @@ function toMatrix(arr, row) {
   }
 }
 
+
+// ------------------------
+// *** Routes Block ***
+// ------------------------
 
 
 // === Main Routes

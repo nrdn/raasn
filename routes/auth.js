@@ -5,15 +5,18 @@ var User = require('../models/main.js').User;
 // *** Auth Block ***
 // ------------------------
 
-exports.main = function (req, res) {
+
+exports.main = function(req, res) {
   res.render('auth');
 }
+
 
 // ------------------------
 // *** Login Block ***
 // ------------------------
 
-exports.login = function (req, res) {
+
+exports.login = function(req, res) {
   res.render('login');
 }
 
@@ -30,13 +33,12 @@ exports.login_form = function(req, res) {
 }
 
 
-
 // ------------------------
 // *** Logout Block ***
 // ------------------------
 
 
-exports.logout = function (req, res) {
+exports.logout = function(req, res) {
   delete req.session.user_id;
   delete req.session.login;
   delete req.session.status;
@@ -56,7 +58,7 @@ exports.registr = function(req, res) {
     res.redirect('/');
 }
 
-exports.registr_form = function (req, res) {
+exports.registr_form = function(req, res) {
   var post = req.body;
 
   var user = new User({
