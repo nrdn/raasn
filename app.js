@@ -46,6 +46,17 @@ app.use(function(req, res, next) {
 
 
 // -------------------
+// *** Routes Block ***
+// -------------------
+
+var main = require('./routes/main.js');
+var blog = require('./routes/blog.js');
+var auth = require('./routes/auth.js');
+var content = require('./routes/content.js');
+var files = require('./routes/files.js');
+// var admin = require('./routes/admin.js');
+
+// -------------------
 // *** Model Block ***
 // -------------------
 
@@ -105,82 +116,18 @@ function toMatrix(arr, row) {
 
 
 // ------------------------
-// *** Index Block ***
+// *** Main Block ***
 // ------------------------
 
-
-app.route('/').get(function(req, res) {
-  res.redirect('/posts')
-});
-
+app.get('/', main.index);
+app.get('/lang/:locale', main.locale);
 
 // ------------------------
-// *** Posts Block ***
+// *** Blog Block ***
 // ------------------------
 
-
-app.route('/posts').get(function(req, res) {
-  Post.aggregate()
-  .group({
-    '_id': {
-      year: { $year: '$date' },
-      month: { $month: '$date' },
-      day: { $dayOfMonth: '$date' }
-    },
-    'posts': {
-      $push: {
-        title: '$title',
-        description: '$description',
-        _id: '$_id',
-        time: {
-          hours: { $hour: '$date' },
-          minutes: { $minute: '$date' }
-        }
-      }
-    },
-    'count': { $sum: 1 }
-  })
-  .sort({'_id.year': -1, '_id.month': -1, '_id.day': -1})
-  .exec(function(err, dates) {
-    res.render('posts', {dates: dates});
-  });
-});
-
-
-// ------------------------
-// *** Post Block ***
-// ------------------------
-
-
-app.route('/posts/:id').get(function(req, res) {
-  var id = req.params.id;
-
-  Post.findById(id).exec(function(err, post) {
-    res.render('posts/post.jade', {post: post});
-  });
-});
-
-
-// ------------------------
-// *** Set Locale Block ***
-// ------------------------
-
-
-app.route('/lang/:locale').get(function(req, res) {
-  res.cookie('locale', req.params.locale);
-  res.redirect('back');
-});
-
-
-// ------------------------
-// *** Auth Block ***
-// ------------------------
-
-
-app.route('/auth').get(checkAuth, function (req, res) {
-  res.render('auth');
-});
-
+app.get('/posts', blog.posts);
+app.get('/posts/:id', blog.post);
 
 // ------------------------
 // *** Admin Posts Block ***
@@ -260,94 +207,45 @@ edit_posts.post(checkAuth, function(req, res) {
 });
 
 
+
+// ------------------------
+// *** Auth Block ***
+// ------------------------
+
+app.get('/auth', checkAuth, auth.main);
+
 // ------------------------
 // *** Login Block ***
 // ------------------------
 
-
-var login = app.route('/login');
-
-login.get(function (req, res) {
-  res.render('login');
-});
-
-login.post(function(req, res) {
-  var post = req.body;
-
-  User.findOne({ 'login': post.login, 'password': post.password }, function (err, person) {
-    if (!person) return res.redirect('back');
-    req.session.user_id = person._id;
-    req.session.status = person.status;
-    req.session.login = person.login;
-    res.redirect('/auth');
-  });
-});
-
+app.get('/login', auth.login);
+app.post('/login', auth.login_form);
 
 // ------------------------
 // *** Logout Block ***
 // ------------------------
 
-
-app.route('/logout').get(function (req, res) {
-  delete req.session.user_id;
-  delete req.session.login;
-  delete req.session.status;
-  res.redirect('back');
-});
-
+app.get('/logout', auth.logout);
 
 // ------------------------
 // *** Registr Block ***
 // ------------------------
 
-
-var registr = app.route('/registr');
-
-registr.get(function(req, res) {
-  if (!req.session.user_id)
-    res.render('registr');
-  else
-    res.redirect('/');
-});
-
-registr.post(function (req, res) {
-  var post = req.body;
-
-  var user = new User({
-    login: post.login,
-    password: post.password,
-    email: post.email
-  });
-
-  user.save(function(err, user) {
-    if(err) {throw err;}
-    console.log('New User created');
-    req.session.user_id = user._id;
-    req.session.login = user.login;
-    req.session.status = user.status;
-    res.redirect('/login');
-  });
-});
-
+app.get('/registr', auth.registr);
+app.post('/registr', auth.registr_form);
 
 // ------------------------
-// *** Static Block ***
+// *** Content Block ***
 // ------------------------
 
+app.get('/contacts', content.contacts);
 
-app.route('/contacts').get(function (req, res) {
-  res.render('static/contacts.jade');
-});
+// ------------------------
+// *** Files Block ***
+// ------------------------
 
-app.route('/sitemap.xml').get(function(req, res){
-  res.sendfile('sitemap.xml',  {root: './public'});
-});
-
-app.route('/robots.txt').get(function(req, res){
-  res.sendfile('robots.txt',  {root: './public'});
-});
-
+app.get('/sitemap.xml', files.sitemap);
+app.get('/robots.txt', files.robots);
 
 // ------------------------
 // *** Error Handling Block ***
