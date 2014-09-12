@@ -54,16 +54,7 @@ var blog = require('./routes/blog.js');
 var auth = require('./routes/auth.js');
 var content = require('./routes/content.js');
 var files = require('./routes/files.js');
-// var admin = require('./routes/admin.js');
-
-// -------------------
-// *** Model Block ***
-// -------------------
-
-
-var User = models.User;
-var Post = models.Post;
-
+var admin = require('./routes/admin.js');
 
 // ------------------------
 // *** Midleware Block ***
@@ -109,143 +100,88 @@ function toMatrix(arr, row) {
 
 
 // ------------------------
-// *** Post parms Block ***
-// ------------------------
-
-
-
-
-// ------------------------
 // *** Main Block ***
 // ------------------------
 
+
 app.get('/', main.index);
 app.get('/lang/:locale', main.locale);
+
 
 // ------------------------
 // *** Blog Block ***
 // ------------------------
 
+
 app.get('/posts', blog.posts);
 app.get('/posts/:id', blog.post);
+
 
 // ------------------------
 // *** Admin Posts Block ***
 // ------------------------
 
 
-app.route('/auth/posts').get(checkAuth, function(req, res) {
-  Post.find().exec(function(err, posts) {
-    res.render('auth/posts/', {posts: posts});
-  });
-});
+app.get('/auth/posts', checkAuth, admin.posts_list);
+
+app.get('/auth/posts/add', checkAuth, admin.posts_add);
+app.post('/auth/posts/add', checkAuth, admin.posts_add_form);
 
 
-// ------------------------
-// *** Add Posts Block ***
-// ------------------------
-
-
-var add_posts= app.route('/auth/posts/add');
-
-add_posts.get(checkAuth, function(req, res) {
-  res.render('auth/posts/add.jade');
-});
-
-add_posts.post(checkAuth, function(req, res) {
-  var post = req.body;
-  var files = req.files;
-  var date = new Date();
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-
-  var post_item = new Post();
-
-  post_item.title.ru = post.ru.title;
-  post_item.description.ru = post.ru.description;
-  post_item.date = new Date(Date.UTC(post.date.year, post.date.month, post.date.date, hours, minutes));
-
-  post_item.save(function(err, post_item) {
-    res.redirect('/auth/posts');
-  });
-});
-
-
-// ------------------------
-// *** Edit Posts Block ***
-// ------------------------
-
-
-var edit_posts = app.route('/auth/posts/edit/:id');
-
-
-edit_posts.get(checkAuth, function(req, res) {
-  var id = req.params.id;
-
-  Post.findById(id).exec(function(err, post) {
-    res.render('auth/posts/edit.jade', {post: post});
-  });
-});
-
-edit_posts.post(checkAuth, function(req, res) {
-  var post = req.body;
-  var id = req.params.id;
-  var date = new Date();
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-
-  Post.findById(id).exec(function(err, post_item) {
-
-    post_item.title.ru = post.ru.title;
-    post_item.description.ru = post.ru.description;
-    post_item.date = new Date(Date.UTC(post.date.year, post.date.month, post.date.date, hours, minutes));
-
-    post_item.save(function(err, post_item) {
-      res.redirect('/auth/posts');
-    });
-  });
-});
-
+app.get('/auth/posts/edit/:id', checkAuth, admin.posts_edit);
+app.post('/auth/posts/edit/:id', checkAuth, admin.posts_edit_form);
 
 
 // ------------------------
 // *** Auth Block ***
 // ------------------------
 
+
 app.get('/auth', checkAuth, auth.main);
+
 
 // ------------------------
 // *** Login Block ***
 // ------------------------
 
+
 app.get('/login', auth.login);
 app.post('/login', auth.login_form);
+
 
 // ------------------------
 // *** Logout Block ***
 // ------------------------
 
+
 app.get('/logout', auth.logout);
+
 
 // ------------------------
 // *** Registr Block ***
 // ------------------------
 
+
 app.get('/registr', auth.registr);
 app.post('/registr', auth.registr_form);
+
 
 // ------------------------
 // *** Content Block ***
 // ------------------------
 
+
 app.get('/contacts', content.contacts);
+
 
 // ------------------------
 // *** Files Block ***
 // ------------------------
 
+
 app.get('/sitemap.xml', files.sitemap);
 app.get('/robots.txt', files.robots);
+
 
 // ------------------------
 // *** Error Handling Block ***
