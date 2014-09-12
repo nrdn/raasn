@@ -99,85 +99,50 @@ function toMatrix(arr, row) {
 }
 
 
-// ------------------------
-// *** Main Block ***
-// ------------------------
 
+// === Main Routes
 
 app.get('/', main.index);
 app.get('/lang/:locale', main.locale);
 
-
-// ------------------------
-// *** Blog Block ***
-// ------------------------
-
+// === Blog Routes
 
 app.get('/posts', blog.posts);
 app.get('/posts/:id', blog.post);
 
-
-// ------------------------
-// *** Admin Posts Block ***
-// ------------------------
-
+// === Admin Posts Routes
 
 app.get('/auth/posts', checkAuth, admin.posts_list);
 
 app.get('/auth/posts/add', checkAuth, admin.posts_add);
 app.post('/auth/posts/add', checkAuth, admin.posts_add_form);
 
-
 app.get('/auth/posts/edit/:id', checkAuth, admin.posts_edit);
 app.post('/auth/posts/edit/:id', checkAuth, admin.posts_edit_form);
 
-
-// ------------------------
-// *** Auth Block ***
-// ------------------------
-
+// === Auth Routes
 
 app.get('/auth', checkAuth, auth.main);
 
-
-// ------------------------
-// *** Login Block ***
-// ------------------------
-
+// === Login Routes
 
 app.get('/login', auth.login);
 app.post('/login', auth.login_form);
 
-
-// ------------------------
-// *** Logout Block ***
-// ------------------------
-
+// === Logout Routes
 
 app.get('/logout', auth.logout);
 
-
-// ------------------------
-// *** Registr Block ***
-// ------------------------
-
+// === Registr Routes
 
 app.get('/registr', auth.registr);
 app.post('/registr', auth.registr_form);
 
-
-// ------------------------
-// *** Content Block ***
-// ------------------------
-
+// === Content Routes
 
 app.get('/contacts', content.contacts);
 
-
-// ------------------------
-// *** Files Block ***
-// ------------------------
-
+// === Files Routes
 
 app.get('/sitemap.xml', files.sitemap);
 app.get('/robots.txt', files.robots);
