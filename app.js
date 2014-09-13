@@ -2,9 +2,8 @@ var fs = require('fs');
 var gm = require('gm').subClass({ imageMagick: true });
 var async = require('async');
 
-var mongoose = require('mongoose'),
-		models = require('./models/main.js');
-			mongoose.connect('localhost', 'main');
+var mongoose = require('mongoose');
+		mongoose.connect('localhost', 'main');
 
 var express = require('express'),
 		bodyParser = require('body-parser'),
@@ -64,10 +63,7 @@ var admin = require('./routes/admin.js');
 
 
 function checkAuth (req, res, next) {
-	if (req.session.user_id)
-		next();
-	else
-		res.redirect('/login');
+	req.session.user_id ? next() : res.redirect('/login');
 }
 
 
@@ -77,18 +73,16 @@ function checkAuth (req, res, next) {
 
 
 var deleteFolderRecursive = function(path) {
-	if( fs.existsSync(path) ) {
-		fs.readdirSync(path).forEach(function(file,index){
-			var curPath = path + "/" + file;
-			if(fs.statSync(curPath).isDirectory()) {
-				deleteFolderRecursive(curPath);
-			} else {
-				fs.unlinkSync(curPath);
-			}
+	if ( fs.existsSync(path) ) {
+		fs.readdirSync(path).forEach(function(file, index){
+			var curPath = path + '/' + file;
+			fs.statSync(curPath).isDirectory()
+				? fs.statSync(curPath).isDirectory()
+				: fs.unlinkSync(curPath);
 		});
 		fs.rmdirSync(path);
 	}
-};
+}
 
 
 function toMatrix(arr, row) {
@@ -128,14 +122,14 @@ app.route('/auth/posts').get(checkAuth, admin.posts_list);
 
 // === Admin @add post Route
 app.route('/auth/posts/add')
-	.get(checkAuth, admin.posts_add)
-	.post(checkAuth, admin.posts_add_form);
+	 .get(checkAuth, admin.posts_add)
+	 .post(checkAuth, admin.posts_add_form);
 
 
 // === Admin @edit post Route
 app.route('/auth/posts/edit/:id')
-	.get(checkAuth, admin.posts_edit)
-	.post(checkAuth, admin.posts_edit_form);
+	 .get(checkAuth, admin.posts_edit)
+	 .post(checkAuth, admin.posts_edit_form);
 
 
 // === Auth Route
@@ -144,8 +138,8 @@ app.route('/auth').get(checkAuth, auth.main);
 
 // === Login Route
 app.route('/login')
-	.get(auth.login)
-	.post(auth.login_form);
+	 .get(auth.login)
+	 .post(auth.login_form);
 
 
 // === Logout Route
@@ -154,8 +148,8 @@ app.route('/logout').get(auth.logout);
 
 // === Registr Route
 app.route('/registr')
-	.get(auth.registr)
-	.post(auth.registr_form);
+	 .get(auth.registr)
+	 .post(auth.registr_form);
 
 
 // === Contacts Route
