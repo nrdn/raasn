@@ -3,17 +3,17 @@ var gm = require('gm').subClass({ imageMagick: true });
 var async = require('async');
 
 var mongoose = require('mongoose'),
-    models = require('./models/main.js');
-      mongoose.connect('localhost', 'main');
+		models = require('./models/main.js');
+			mongoose.connect('localhost', 'main');
 
 var express = require('express'),
-    bodyParser = require('body-parser'),
-    multer = require('multer'),
-    accepts = require('accepts'),
-    cookieParser = require('cookie-parser'),
-    session = require('express-session'),
-    methodOverride = require('method-override'),
-      app = express();
+		bodyParser = require('body-parser'),
+		multer = require('multer'),
+		accepts = require('accepts'),
+		cookieParser = require('cookie-parser'),
+		session = require('express-session'),
+		methodOverride = require('method-override'),
+			app = express();
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -27,21 +27,21 @@ app.use(methodOverride());
 app.use(cookieParser());
 
 app.use(session({
-  key: 'raasn.sess',
-  resave: false,
-  saveUninitialized: false,
-  secret: 'keyboard cat',
-  cookie: {
-    path: '/',
-    maxAge: 1000 * 60 * 60 // 1 hour
-  }
+	key: 'raasn.sess',
+	resave: false,
+	saveUninitialized: false,
+	secret: 'keyboard cat',
+	cookie: {
+		path: '/',
+		maxAge: 1000 * 60 * 60 // 1 hour
+	}
 }));
 
 
 app.use(function(req, res, next) {
-  res.locals.session = req.session;
-  res.locals.locale = req.cookies.locale || 'ru';
-  next();
+	res.locals.session = req.session;
+	res.locals.locale = req.cookies.locale || 'ru';
+	next();
 });
 
 
@@ -64,10 +64,10 @@ var admin = require('./routes/admin.js');
 
 
 function checkAuth (req, res, next) {
-  if (req.session.user_id)
-    next();
-  else
-    res.redirect('/login');
+	if (req.session.user_id)
+		next();
+	else
+		res.redirect('/login');
 }
 
 
@@ -77,27 +77,27 @@ function checkAuth (req, res, next) {
 
 
 var deleteFolderRecursive = function(path) {
-  if( fs.existsSync(path) ) {
-    fs.readdirSync(path).forEach(function(file,index){
-      var curPath = path + "/" + file;
-      if(fs.statSync(curPath).isDirectory()) {
-        deleteFolderRecursive(curPath);
-      } else {
-        fs.unlinkSync(curPath);
-      }
-    });
-    fs.rmdirSync(path);
-  }
+	if( fs.existsSync(path) ) {
+		fs.readdirSync(path).forEach(function(file,index){
+			var curPath = path + "/" + file;
+			if(fs.statSync(curPath).isDirectory()) {
+				deleteFolderRecursive(curPath);
+			} else {
+				fs.unlinkSync(curPath);
+			}
+		});
+		fs.rmdirSync(path);
+	}
 };
 
 
 function toMatrix(arr, row) {
-  var a = [];
-  for (var i = 0; i < row;) {
-    a[i] ? a[i].push(arr.shift()) : (a[i] = []);
-    i = ++i % row;
-    if (!arr.length) return a;
-  }
+	var a = [];
+	for (var i = 0; i < row;) {
+		a[i] ? a[i].push(arr.shift()) : (a[i] = []);
+		i = ++i % row;
+		if (!arr.length) return a;
+	}
 }
 
 
@@ -105,53 +105,56 @@ function toMatrix(arr, row) {
 // *** Routes Block ***
 // ------------------------
 
-
 // === Main Routes
 
-app.get('/', main.index);
-app.get('/lang/:locale', main.locale);
+app.route('/').get(main.index);
+app.route('/lang/:locale').get(main.locale);
 
 // === Blog Routes
 
-app.get('/posts', blog.posts);
-app.get('/posts/:id', blog.post);
+app.route('/posts').get(blog.posts);
+app.route('/posts/:id').get(blog.post);
 
 // === Admin Posts Routes
 
-app.get('/auth/posts', checkAuth, admin.posts_list);
+app.route('/auth/posts').get(checkAuth, admin.posts_list);
 
-app.get('/auth/posts/add', checkAuth, admin.posts_add);
-app.post('/auth/posts/add', checkAuth, admin.posts_add_form);
+app.route('/auth/posts/add')
+	.get(checkAuth, admin.posts_add)
+	.post(checkAuth, admin.posts_add_form);
 
-app.get('/auth/posts/edit/:id', checkAuth, admin.posts_edit);
-app.post('/auth/posts/edit/:id', checkAuth, admin.posts_edit_form);
+app.route('/auth/posts/edit/:id')
+	.get(checkAuth, admin.posts_edit)
+	.post(checkAuth, admin.posts_edit_form);
 
 // === Auth Routes
 
-app.get('/auth', checkAuth, auth.main);
+app.route('/auth').get(checkAuth, auth.main);
 
 // === Login Routes
 
-app.get('/login', auth.login);
-app.post('/login', auth.login_form);
+app.route('/login')
+	.get(auth.login)
+	.post(auth.login_form);
 
 // === Logout Routes
 
-app.get('/logout', auth.logout);
+app.route('/logout').get(auth.logout);
 
 // === Registr Routes
 
-app.get('/registr', auth.registr);
-app.post('/registr', auth.registr_form);
+app.route('/registr')
+	.get(auth.registr)
+	.post(auth.registr_form);
 
 // === Content Routes
 
-app.get('/contacts', content.contacts);
+app.route('/contacts').get(content.contacts);
 
 // === Files Routes
 
-app.get('/sitemap.xml', files.sitemap);
-app.get('/robots.txt', files.robots);
+app.route('/sitemap.xml').get(files.sitemap);
+app.route('/robots.txt').get(files.robots);
 
 
 // ------------------------
@@ -160,34 +163,34 @@ app.get('/robots.txt', files.robots);
 
 
 app.use(function(req, res, next) {
-  var accept = accepts(req);
-  res.status(404);
+	var accept = accepts(req);
+	res.status(404);
 
-  // respond with html page
-  if (accept.types('html')) {
-    res.render('error', { url: req.url, status: 404 });
-    return;
-  }
+	// respond with html page
+	if (accept.types('html')) {
+		res.render('error', { url: req.url, status: 404 });
+		return;
+	}
 
-  // respond with json
-  if (accept.types('json')) {
-      res.send({
-      error: {
-        status: 'Not found'
-      }
-    });
-    return;
-  }
+	// respond with json
+	if (accept.types('json')) {
+			res.send({
+			error: {
+				status: 'Not found'
+			}
+		});
+		return;
+	}
 
-  // default to plain-text
-  res.type('txt').send('Not found');
+	// default to plain-text
+	res.type('txt').send('Not found');
 });
 
 app.use(function(err, req, res, next) {
-  var status = err.status || 500;
+	var status = err.status || 500;
 
-  res.status(status);
-  res.render('error', { error: err, status: status });
+	res.status(status);
+	res.render('error', { error: err, status: status });
 });
 
 
