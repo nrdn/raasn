@@ -31,6 +31,7 @@ exports.posts_add_form = function(req, res) {
 
   var post_item = new Post();
 
+  post_item.hidden = post.hidden;
   post_item.title.ru = post.ru.title;
   post_item.description.ru = post.ru.description;
   post_item.date = new Date(Date.UTC(post.date.year, post.date.month, post.date.date, hours, minutes));
@@ -63,6 +64,7 @@ exports.posts_edit_form = function(req, res) {
 
   Post.findById(id).exec(function(err, post_item) {
 
+    post_item.hidden = post.hidden;
     post_item.title.ru = post.ru.title;
     post_item.description.ru = post.ru.description;
     post_item.date = new Date(Date.UTC(post.date.year, post.date.month, post.date.date, hours, minutes));
@@ -70,5 +72,19 @@ exports.posts_edit_form = function(req, res) {
     post_item.save(function(err, post_item) {
       res.redirect('/auth/posts');
     });
+  });
+}
+
+
+// ------------------------
+// *** Remove Posts Block ***
+// ------------------------
+
+
+exports.posts_remove_form = function(req, res) {
+  var id = req.body.id;
+
+  Post.findByIdAndRemove(id, function(err, post) {
+    res.send('ok');
   });
 }

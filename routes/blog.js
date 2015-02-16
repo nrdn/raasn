@@ -8,6 +8,9 @@ var Post = require('../models/main.js').Post;
 
 exports.posts = function(req, res) {
   Post.aggregate()
+  .match({
+    hidden: { '$exists': false }
+  })
   .group({
     '_id': {
       year: { $year: '$date' },

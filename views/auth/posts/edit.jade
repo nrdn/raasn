@@ -33,6 +33,9 @@ block content
 			.form_title Описание:
 			textarea.ru(name="ru[description]", rows="8",)= post.description.ru
 			textarea.en(name="en[description]", rows="8", disabled)
+			.form_title Видимость:
+			input(type='checkbox', name='hidden', value='true', checked=post.hidden)
+			|скрыть
 			.form_title Дата:
 			select(name='date[date]')
 				option(value='') Дата

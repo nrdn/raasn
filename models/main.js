@@ -18,6 +18,7 @@ var postSchema = new Schema({
 		ru: String,
 		en: String
 	},
+	hidden: Boolean,
 	category: String,
 	photo: String,
 	date: {type: Date, default: Date.now}

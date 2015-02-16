@@ -21,4 +21,4 @@ block content
 			.post
 				a.rm_post(href='#', id=post._id)= 'удалить '
 				!=' | '
-				a(href='/auth/posts/edit/' + post._id)= post.title.ru
+				a(href='/auth/posts/edit/' + post._id, class=post.hidden && 'hidden')= post.title.ru

@@ -123,3 +123,7 @@ input, textarea, select {
 	display: none;
 	margin-left: 40px;
 }
+
+a.hidden {
+	color: red;
+}

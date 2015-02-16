@@ -131,6 +131,10 @@ app.route('/auth/posts/edit/:id')
 	 .get(checkAuth, admin.posts_edit)
 	 .post(checkAuth, admin.posts_edit_form);
 
+// === Admin @remove post Route
+app.route('/rm_post')
+	 .post(checkAuth, admin.posts_remove_form);
+
 
 // === Auth Route
 app.route('/auth').get(checkAuth, auth.main);
